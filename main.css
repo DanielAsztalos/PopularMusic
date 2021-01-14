@@ -10,13 +10,23 @@ html, body{
 h1, h2, h3, h4, h5{
     /* color: #41a066; */
     color: #0f8664;
+    padding-top: 2em;
+}
+
+.footer{
+    width: 100%;
+    height: 1em;
+    display: flex;
+    flex-direction: column;
 }
 
 .container{
     display: flex;
     flex-direction: row;
-    height: 100px;
+    /* height: 100px; */
     width: 100%;
+    padding-top: 3em;
+    padding-bottom: 3em;
 }
 
 .container > .left{
@@ -32,6 +42,11 @@ h1, h2, h3, h4, h5{
 .container > .right{
     flex-grow: 3;
     width: 25%;
+}
+
+p{
+    text-indent: 2em;
+    text-align: justify;
 }
 
 a, a:active, a:visited{
@@ -58,7 +73,10 @@ blockquote{
 }
 
 td{
-    padding-bottom: 1em;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid lightgray;
+    text-align: justify;
 }
 
 
