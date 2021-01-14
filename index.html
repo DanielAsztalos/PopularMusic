@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
+
     <div class="container">
         <div class="left"></div>
         <div class="main">
@@ -26,7 +27,7 @@
                             <li><a href="#titles">Song titles</a></li>
                         </ul>
                     </li>
-                    <li><a href="#ref">References</a></li>
+                    <li><a href="#conclusions">Conclusions</a></li>
                 </ul>
             </p>
 
@@ -37,7 +38,7 @@
                 to people listening to it."</blockquote></p>
             <p>This means that musical pieces are great subjects for analysis as they consist of patterns. By exploring
                 these patterns one can extract valuable information that later can be used to train various types
-                of predictive models.
+                of predictive models, like genre or popularity prediction.
             </p>
             <p>The purpose of this report is to explore how musical pieces and the general musical 
                 taste changed, evolved over the course of a century.
@@ -45,22 +46,200 @@
             <p>For my analysis I used a dataset consisting of over 160,000 samples of song features.</p>
 
             <h2 id="data">About the data</h2>
-            <p></p>
+            <p>The dataset I used for my analysis was uploaded by <a href="https://www.kaggle.com/yamaerenay">Yamaç Eren Ay</a>
+                to the <a href="https://kaggle.com">Kaggle</a> platform and can be accessed <a href="https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks">here</a>. It 
+                was collected using <a href="https://developer.spotify.com/documentation/web-api/">Spotify's Web API</a>.
+            </p>
+            <p>
+                This dataset consists of 170,653 samples. Each sample has 19 features that are the following:
+                <table>
+                    <tr>
+                        <td><b>id</b></td>
+                        <td>The Spotify ID for the track.</td>
+                    </tr>
+                    <tr>
+                        <td><b>acousticness</b></td>
+                        <td>A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.</td>
+                    </tr>
+                    <tr>
+                        <td><b>danceability</b></td>
+                        <td>Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.</td>
+                    </tr>
+                    <tr>
+                        <td><b>energy</b></td>
+                        <td>Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy.</td>
+                    </tr>
+                    <tr>
+                        <td><b>instrumentalness</b></td>
+                        <td>Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly “vocal”. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. </td>
+                    </tr>
+                    <tr>
+                        <td><b>liveness</b></td>
+                        <td>Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live.</td>
+                    </tr>
+                    <tr>
+                        <td><b>loudness</b></td>
+                        <td>The overall loudness of a track in decibels (dB).</td>
+                    </tr>
+                    <tr>
+                        <td><b>speechiness</b></td>
+                        <td>Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value.</td>
+                    </tr>
+                    <tr>
+                        <td><b>valence</b></td>
+                        <td>A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry). </td>
+                    </tr>
+                    <tr>
+                        <td><b>tempo</b></td>
+                        <td>The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration.</td>
+                    </tr>
+                    <tr>
+                        <td><b>key</b></td>
+                        <td>The estimated overall key of the track. Integers map to pitches using standard Pitch Class notation . E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on. If no key was detected, the value is -1.</td>
+                    </tr>
+                    <tr>
+                        <td><b>duration_ms</b></td>
+                        <td>The duration of the track in milliseconds.</td>
+                    </tr>
+                    <tr>
+                        <td><b>mode</b></td>
+                        <td>Mode indicates the modality (major or minor) of a track, the type of scale from which its melodic content is derived. Major is represented by 1 and minor is 0.</td>
+                    </tr>
+                    <tr>
+                        <td><b>popularity</b></td>
+                        <td>The popularity of the track. The value will be between 0 and 100, with 100 being the most popular.</td>
+                    </tr>
+                    <tr>
+                        <td><b>name</b></td>
+                        <td>The name of the track.</td>
+                    </tr>
+                    <tr>
+                        <td><b>explicit</b></td>
+                        <td>Whether or not the track has explicit lyrics ( true = yes it does; false = no it does not OR unknown).</td>
+                    </tr>
+                    <tr>
+                        <td><b>artists</b></td>
+                        <td>The artists who performed the track.</td>
+                    </tr>
+                    <tr>
+                        <td><b>year</b></td>
+                        <td>The year of release.</td>
+                    </tr>
+                    <tr>
+                        <td><b>release_date</b></td>
+                        <td>Date of release mostly in yyyy-mm-dd format, however precision of date may vary.</td>
+                    </tr>
+                </table>
+            </p>
+            <p>
+                Genres were separately extracted from Spotify's database as they are attributes of the artists, not the songs.
+            </p>
+            <iframe src="distr.html" width="100%" height="400px" frameborder="0"></iframe>
+            <p>By looking at the distribution of the data it is noticeable that the sampling isn't entirely uniform.
+                From 1921 until the mid-1940s the number of samples is relatively low compared to other periods. The cause
+                of this might be the fact that recording technology wasn't as developed and widely available as later on, so 
+                the number of published tracks were small. 
+            </p>
+            <!-- <p>
+                Another important thing is that there are no more than 2,100 samples for each year and because of
+                that the things presented in this report might differ from the reality.
+            </p> -->
 
             <h2 id="analysis">Analysis</h2>
             <h3 id="attr">Song attributes</h3>
             <iframe src="attributes.html" width="750px" height="500px" frameborder="0"></iframe>
+            <a href="attributes.html" target="_blank" rel="noopener noreferrer">Open in fullscreen.</a>
+            <p>
+                I started my analysis by looking at how different attributes of the songs looked like each year.
+                The radar chart presented above shows the yearly average of these attributes. I also put the standard
+                deviation on the plot to be more accurate.
+            </p>
+            <p>
+                Early songs were characterized by higher acousticness and loudness values, moderate danceability, valence and
+                instrumentalness, and lower energy and liveness. Later the average acousticness drastically decreases and songs
+                become more energetic and danceable. 
+            </p>
             <iframe src="attrib2.html" width="100%" height="500px" frameborder="0"></iframe>
+            <a href="attrib2.html" target="_blank" rel="noopener noreferrer">Open in fullscreen.</a>
+            <p>
+                The line chart above presents how the average of the song attributes changed over the years. 
+            </p>
+            <p>
+                By examining these plots we can notice that the observed decrease in acousticness and increase in energy happened
+                around the same period of time. We can also discover that the loudness of the tracks showed a slow but steady 
+                increase.
+            </p>
             <iframe src="mode.html" width="100%" height="400px" frameborder="0"></iframe>
+            <a href="mode.html" target="_blank" rel="noopener noreferrer">Open in fullscreen.</a>
+            <p>
+                The majority of the songs was written in a major key which means that the dominant emotion of the songs
+                analysed is happiness.
+            </p>
             <iframe src="corr.html" width="100%" height="500px" frameborder="0"></iframe>
+            <a href="corr.html" target="_blank" rel="noopener noreferrer">Open in fullscreen.</a>
+            <p>
+                Looking at the pearson correlation of the numerical features we notice a few things. First, there is a 
+                strong positive correlation between year and popularity, which is due to the fact that Spotify takes into
+                account the year of release when calculating popularity scores. Second, the relationship between the acousticness
+                and energy that was discussed earlier is present through a strongly negative correlation. An interesing thing is 
+                the positive correlation between loudness and energy.
+            </p>
             <h3 id="genre">Genres</h3>
+            <iframe src="genres_plot.html" width="100%" height="500px" frameborder="0"></iframe>
+            <a href="genres_plot.html" target="_blank" rel="noopener noreferrer">Open in fullscreen.</a>
+            <p>
+                The above race plot shows the top 10 genres that the most songs belong to in the selected year.
+                From 1921 until the 1950 the most songs were classical pieces and its subgenres. From the 1950s up 
+                until mid-1960s jazz was the dominant genre. From the 1960s until the 2000s the majority of the songs in the
+                sample were rock songs. In the 1980s we can see the appearance of the 'new wave' genre, after that during the 
+                90s there were quite a few metal songs. From the mid-1990s we can see that hip hop and pop songs started to 
+                take over the leaderboard. The 2010 are dominated by these two genres and their subgenres.
+            </p>
+            <iframe src="tempo.html" width="100%" height="500px" frameborder="0"></iframe>
+            <a href="tempo.html" target="_blank" rel="noopener noreferrer">Open in fullscreen.</a>
+            <p>
+                I also wanted to explore the distribution of tempo from songs that belong to a selected genre.
+                The data confirmed my expectations, faster genres being the likes of dance pop, disco, punk, 
+                and slower genres are some subgenres of classical music, like early romantic era, and jazz.
+            </p>
             <h3 id="titles">Song titles</h3>
-
-            <h2 id="ref">References</h2>
+            <!-- <iframe src="wordclouds2.html" width="100%" height="600px" frameborder="0"></iframe> -->
+            <a href="wordclouds2.html" target="_blank" rel="noopener noreferrer"><img src="wc_thumbnail.png" width="500px" alt=""></a><br>
+            <a href="wordclouds2.html" target="_blank" rel="noopener noreferrer">Open in fullscreen.</a>
+            <h2 id="conclusions">Conclusions</h2>
 
         </div>
         <div class="right"></div>
     </div>
+
+    <script>
+
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+    </script>
     
 </body>
 </html>
